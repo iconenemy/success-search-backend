@@ -1,0 +1,120 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: ./apps/gateway/Dockerfile
+      target: development
+    command: npm run start:dev gateway
+    env_file:
+      - ./apps/gateway/.env
+    depends_on:
+      - postgres_db
+      - rabbitmq
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 8000:8000
+
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: npm run start:dev auth
+    env_file:
+      - ./apps/auth/.env
+    depends_on:
+      - gateway
+      - rabbitmq
+      - postgres_db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+  
+  user:
+    build:
+      context: .
+      dockerfile: ./apps/user/Dockerfile
+      target: development
+    command: npm run start:dev user
+    env_file:
+      - ./apps/user/.env
+    depends_on:
+      - gateway
+      - rabbitmq
+      - postgres_db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  notification:
+    build:
+      context: .
+      dockerfile: ./apps/notification/Dockerfile
+      target: development
+    command: npm run start:dev notification
+    env_file:
+      - ./apps/notification/.env
+    depends_on:
+      - mailhog
+      - gateway
+      - rabbitmq
+      - postgres_db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  postgres_db:
+    container_name: postgres_db
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=iconenemy
+      - POSTGRES_PASSWORD=JhNjgtL
+      - POSTGRES_DB=talent-hub-local
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.10.7-management
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=iconenemy
+      - RABBITMQ_DEFAULT_PASS=JhNjgtL
+    ports:
+      - 15672:15672
+      - 5672:5672
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+
+  redis:
+    container_name: redis
+    image: redis:6.2-alpine
+    restart: always
+    environment:
+      - REDIS_PASSWORD=JhNjgtL
+    ports:
+      - "6379:6379"
+    volumes: 
+      - redis-cache:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog:latest
+    restart: always
+    ports:
+      - 8025:8025
+      - 1025:1025
+
+volumes:
+  rabbitmq:
+  redis-cache:
+  postgres-data:
