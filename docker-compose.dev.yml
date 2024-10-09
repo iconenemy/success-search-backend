@@ -74,7 +74,7 @@ services:
     environment:
       - POSTGRES_USER=iconenemy
       - POSTGRES_PASSWORD=JhNjgtL
-      - POSTGRES_DB=talent-hub-local
+      - POSTGRES_DB=success-search-local
     ports:
       - 5432:5432
     volumes:

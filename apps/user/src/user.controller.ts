@@ -18,4 +18,10 @@ export class UserController {
   create(@Payload() dto: DTO.Auth.SignUp) {
     return this.userRepository.create(dto);
   }
+
+  @MessagePattern({ cmd: Pattern.User.Update })
+  update(@Payload() dto: DTO.User.Update) {
+    const { id, ...updatedData } = dto;
+    return this.userRepository.update(id, updatedData);
+  }
 }

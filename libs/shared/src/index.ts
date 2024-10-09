@@ -15,3 +15,6 @@ export * from './guards/access.auth.guard';
 
 /* Interface */
 export * as Interface from './interfaces';
+
+/* Decorator */
+export * as Decorator from './decorators';

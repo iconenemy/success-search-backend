@@ -10,22 +10,22 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @MessagePattern({ cmd: Pattern.Auth.SignIn })
-  async signIn(@Payload() payload: DTO.Auth.SignIn) {
-    return this.authService.signIn(payload);
+  async signIn(@Payload() dto: DTO.Auth.SignIn) {
+    return this.authService.signIn(dto);
   }
 
   @MessagePattern({ cmd: Pattern.Auth.SignUp })
-  async signUp(@Payload() payload: DTO.Auth.SignUp) {
-    return this.authService.signUp(payload);
+  async signUp(@Payload() dto: DTO.Auth.SignUp) {
+    return this.authService.signUp(dto);
   }
 
   @MessagePattern({ cmd: Pattern.Auth.VerifyEmail })
-  async verifyEmail(@Payload() payload: DTO.Auth.VerifyEmail) {
-    return this.authService.verifyEmail(payload);
+  async verifyEmail(@Payload() dto: DTO.Notification.VerifyEmail) {
+    return this.authService.verifyEmail(dto);
   }
 
   @MessagePattern({ cmd: Pattern.Auth.VerifyAccess })
-  async verifyAccess(@Payload() payload: DTO.Auth.VerifyAccess) {
-    return this.authService.verifyAccess(payload);
+  async verifyAccess(@Payload() dto: DTO.Auth.VerifyAccess) {
+    return this.authService.verifyAccess(dto);
   }
 }

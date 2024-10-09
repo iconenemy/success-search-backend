@@ -1,8 +1,8 @@
+import { IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail } from 'class-validator';
 
 export class VerifyEmail {
-  @IsEmail()
+  @IsNumber()
   @ApiProperty({ required: true })
-  email: string;
+  code: number;
 }

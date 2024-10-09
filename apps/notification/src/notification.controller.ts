@@ -1,13 +1,16 @@
-import { Controller, Get, Render } from '@nestjs/common';
-import { NotificationService } from './notification.service';
+import { Controller } from '@nestjs/common';
 import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
+
+import { DTO, Pattern } from '@libs/shared';
+
+import { NotificationService } from './notification.service';
 
 @Controller()
 export class NotificationController {
   constructor(private readonly notificationService: NotificationService) {}
 
-  @EventPattern({ cmd: 'notification.sendCode' })
-  async sendVerificationCode(@Payload() dto) {
+  @MessagePattern({ cmd: Pattern.Notification.SendCode })
+  async sendVerificationCode(@Payload() dto: DTO.Notification.SendCode) {
     this.notificationService.sendNotificationCode(dto);
   }
 }
