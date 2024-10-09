@@ -13,4 +13,11 @@ export class UserRepository extends BaseRepository<Model.User> {
   ) {
     super(userRepository);
   }
+
+  async update(
+    id: string,
+    updatedData: Partial<Pick<Model.User, 'password' | 'is_verified'>>,
+  ) {
+    return this.userRepository.update(id, updatedData);
+  }
 }

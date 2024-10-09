@@ -1,7 +1,7 @@
 import { Cache } from 'cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 
-import { SendCodeDto } from '@libs/shared';
+import { DTO } from '@libs/shared';
 import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
@@ -11,22 +11,21 @@ export class NotificationService {
     @Inject('CACHE_MANAGER') private cacheManager: Cache,
   ) {}
 
-  async sendNotificationCode(dto: SendCodeDto) {
+  async sendNotificationCode(dto: DTO.Notification.SendCode) {
     const { email } = dto;
 
     const verificationCode = this.generateCode();
 
-    // await this.mailerService.sendMail({
-    //   to: email,
-    //   subject: 'Welcome to Talent hub! Confirm your Email',
-    //   template: './verification',
-    //   context: {
-    //     code: verificationCode,
-    //   },
-    // });
+    await this.mailerService.sendMail({
+      to: email,
+      subject: 'Welcome to Talent hub! Confirm your Email',
+      template: './verification',
+      context: {
+        code: verificationCode,
+      },
+    });
 
     await this.cacheManager.set(email, verificationCode);
-    console.log('REDIS CACHE: ', await this.cacheManager.get(email));
   }
 
   private generateCode() {

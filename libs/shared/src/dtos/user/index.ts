@@ -1,3 +1,4 @@
+import { Update } from './update.dto';
 import { FindOne } from './find.one.dto';
 
-export { FindOne };
+export { Update, FindOne };

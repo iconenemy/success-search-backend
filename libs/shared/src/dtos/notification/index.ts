@@ -1,3 +1,4 @@
 import { SendCode } from './send.code.dto';
+import { VerifyEmail } from './verify.email.dto';
 
-export const Notification = { SendCode };
+export { SendCode, VerifyEmail };
